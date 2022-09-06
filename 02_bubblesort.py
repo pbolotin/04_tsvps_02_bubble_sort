@@ -64,27 +64,21 @@ def selection_sort_enum_list_and_comment_steps(enum_list, order="a"):
     eprint("RESULT:", [t[0] for t in enum_list])
     
 def bubble_sort_enum_list_and_comment_steps(enum_list, order="a"):
-    for step in range(1, len(enum_list)):
-        left_idx = step - 1
-        eprint(f"Step {step}: try to swap between rightest value in the left part and min(max) value in the right part")
-        eprint([t[0] for t in enum_list[:left_idx+1]],"|",[t[0] for t in enum_list[left_idx+1:]])
-        swap_candidate = left_idx
-        for right_idx in range(left_idx + 1, len(enum_list)):
-            if order == "a" and enum_list[swap_candidate][1] > enum_list[right_idx][1]:
-                eprint(f"SWAP CANDIDATE:{left_idx}:{enum_list[left_idx][0]},{right_idx}:{enum_list[right_idx][0]}")
-                swap_candidate = right_idx
-            elif order != "a" and enum_list[swap_candidate][1] < enum_list[right_idx][1]:
-                eprint(f"SWAP CANDIDATE:{left_idx}:{enum_list[left_idx][0]},{right_idx}:{enum_list[right_idx][0]}")
-                swap_candidate = right_idx
+    for step in range(0, len(enum_list)):
+        for rev_step in range(len(enum_list)-1, step, -1):
+            eprint(f"Left limit: {step}, right step: {rev_step}")
+            eprint(f"Compare: {rev_step - 1} and {rev_step} positions")
+            if order == "a" and enum_list[rev_step - 1][1] > enum_list[rev_step][1]:
+                eprint(f"SWAP")
+                swap = enum_list[rev_step - 1]
+                enum_list[rev_step - 1] = enum_list[rev_step]
+                enum_list[rev_step] = swap
+            elif order != "a" and enum_list[rev_step - 1][1] < enum_list[rev_step][1]:
+                eprint(f"SWAP")
+                swap = enum_list[rev_step - 1]
+                enum_list[rev_step - 1] = enum_list[rev_step]
+                enum_list[rev_step] = swap
                 
-        if swap_candidate != left_idx:
-            eprint(f"SWAP {left_idx}:{enum_list[left_idx][0]}, {swap_candidate}:{enum_list[swap_candidate][0]}")
-            swap = enum_list[left_idx]
-            enum_list[left_idx] = enum_list[swap_candidate]
-            enum_list[swap_candidate] = swap
-            
-        eprint()
-            
     eprint("RESULT:", [t[0] for t in enum_list])
 
 def output_result(enum_list):
@@ -118,5 +112,6 @@ if __name__ == "__main__":
     
     enm_lst = read_file_into_enum_list(sys.argv[1])
     show_input(enm_lst)
-    selection_sort_enum_list_and_comment_steps(enm_lst, cfg["SortDirection"])
+    #selection_sort_enum_list_and_comment_steps(enm_lst, cfg["SortDirection"])
+    bubble_sort_enum_list_and_comment_steps(enm_lst, cfg["SortDirection"])
     output_result(enm_lst)
